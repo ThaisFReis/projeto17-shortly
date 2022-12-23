@@ -1,8 +1,9 @@
 import connection from '../db.js';
 import joi from 'joi';
+import bcrypt from 'bcrypt';
 
-export async function singUpMiddlewares (req, res, next) {
-  const { name, email, password, confirmPassword } = req.body;
+export async function signUpMiddlewares (req, res, next) {
+  const { email, password, confirmPassword } = req.body;
 
   // Schema
     const schema = joi.object({
@@ -35,8 +36,6 @@ export async function singUpMiddlewares (req, res, next) {
 }
 
 export async function signInMiddlewares (req, res, next) {
-    const { email, password } = req.body;
-
     // Schema
     const schema = joi.object({
         email: joi.string().email().required(),
@@ -51,19 +50,25 @@ export async function signInMiddlewares (req, res, next) {
         return res.status(400).send(error.details[0].message);
     }
 
-    // Check if user exits
-    const checkUser = await connection.query('SELECT * FROM users WHERE email = $1', [email]);
-    if (checkUser.rows.length === 0) {
+    // Check if email exists
+    const { email, password } = req.body;
+    const emailExists = await connection.query('SELECT * FROM users WHERE email = $1', [email]);
+
+    if (emailExists.rows.length === 0) {
         // Insert an alert later
-        return res.status(400).send("User not found");
+        return res.status(404).send('user not found');
     }
 
-    // Check if email and password match
-    const passwordMatch = await bcrypt.compare(password, checkUser.rows[0].password);
+    // Check if password and email match
+    const user = emailExists.rows[0];
+    const passwordMatch = bcrypt.compareSync(password, user.password);
+
     if (!passwordMatch) {
         // Insert an alert later
-        return res.status(401).send("Email or password incorrect");
+        return res.status(401).send('Email or password incorrect');
     }
+
+    res.locals.user = user;
 
     next();
 }

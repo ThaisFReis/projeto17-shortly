@@ -6,7 +6,7 @@ export async function signUpControllers (req, res) {
     const body = req.body;
     
     // Hash password
-    const passwordHash = await bcrypt.hash(body.password, 10);
+    const passwordHash = bcrypt.hashSync(body.password, 10);
 
     // Insert user
     try {
@@ -21,18 +21,16 @@ export async function signUpControllers (req, res) {
 }
 
 export async function signInControllers (req, res) {
-    
+    const { user } = res.locals;
+
     try {
-
         // Create token
-        const token = jwt.sign({ id: req.user.id }, process.env.JWT_SECRET, {
-            expiresIn: 3600
-        });
+        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1d' });
 
-        res.status(200).send({ token });
+        // Insert an alert later
+        res.status(200).send({ name: user.name, token });
 
     } catch (error) {
-        res.status(500).send(error);
+        res.status(422).send(error);
     }
-
 }

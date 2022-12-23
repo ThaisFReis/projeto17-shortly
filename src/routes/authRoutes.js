@@ -1,10 +1,10 @@
 import { Router } from 'express';
-import { signUpControllers, signInControllers } from '../controllers/authControllers';
-import { signUpMiddlewares, signInMiddlewares } from '../middlewares/authMiddleware';
+import { signUpControllers, signInControllers } from '../controllers/authControllers.js';
+import { signUpMiddlewares, signInMiddlewares } from '../middlewares/authMiddlewares.js';
 
-const router = Router();
+const authRouter = Router();
 
-router.post('/signup', signUpMiddlewares, signUpControllers);
-router.post('/signin', signInMiddlewares, signInControllers);
+authRouter.post('/signup', signUpMiddlewares, signUpControllers);
+authRouter.post('/signin', signInMiddlewares, signInControllers);
 
-export default router;
+export default authRouter;
