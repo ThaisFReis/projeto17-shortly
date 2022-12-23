@@ -1,4 +1,4 @@
-export async function tokenMiddlewares (req, res, next) {
+export async function token (req, res, next) {
     const authorization = req.headers.authorization;
     const token = authorization?.replace('Bearer ', '');
 

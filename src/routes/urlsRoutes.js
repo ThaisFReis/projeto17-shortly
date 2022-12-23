@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { shortenUrlControllers, getOpenUrlControllers, getUrlByIdControllers, deleteUrlControllers } from '../controllers/urlsControllers.js';
+import { shortenUrlControllers, getOpenUrlControllers, getUrlByIdControllers, deleteUrlControllers } from '../controllers/urlsController.js';
 import { token } from '../middlewares/token.js';
 
 const urlsRouter = Router();

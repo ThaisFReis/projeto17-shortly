@@ -1,6 +1,5 @@
 import connection from '../db.js';
 import { nanoid } from "nanoid";
-(error);
 
 export async function shortenUrlControllers (req, res) {
     const { url } = req.body;
@@ -12,7 +11,7 @@ export async function shortenUrlControllers (req, res) {
         res.status(201).send(shortUrl.rows[0]);
 
     } catch (error) {
-        res.status(500).send("Erro in function shortenUrlControllers");
+        res.status(500).send(error);
     }
 
 }
@@ -32,7 +31,7 @@ export async function getOpenUrlControllers (req, res) {
         res.redirect(urls.rows);
 
     } catch (error) {
-        res.status(500).send("Erro in function getOpenUrlControllers");
+        res.status(500).send(error);
     }
 }
 
@@ -52,7 +51,7 @@ export async function getUrlByIdControllers (req, res) {
 
         res.status(200).send(urls.rows[0]);                  
     } catch (error) {
-        res.status(500).send("Erro in function getUrlByIdControllers");
+        res.status(500).send(error);
     }
 }
 
@@ -63,7 +62,7 @@ export async function getUrlsByUserIdControllers (userId) {
         return urls.rows;
 
     } catch (error) {
-        res.status(500).send("Erro in function getUrlsByUserIdControllers");
+        res.status(500).send(error);
     }
 }
 
@@ -87,7 +86,7 @@ export async function deleteUrlControllers (req, res) {
         res.sendStatus(204);
 
     } catch (error) {
-        res.status(500).send("Erro in function deleteUrlControllers");
+        res.status(500).send(error);
     }
 }
 
@@ -98,7 +97,7 @@ export async function getVisitCountControllers (userId) {
         return visitCount.rows[0];
 
     } catch (error) {
-        res.status(500).send("Erro in function getVisitCountControllers");
+        res.status(500).send(error);
     }
 }
 
@@ -107,6 +106,6 @@ export async function getRankingByUserIdControllers () {
         await connection.query('SELECT users.name, SUM(urls.visits) AS totalVisits FROM users INNER JOIN urls ON users.id = urls.userId GROUP BY users.name ORDER BY totalVisits DESC LIMIT 10');
 
     } catch (error) {
-        res.status(500).send("Erro in function getRankingByUserIdControllers");
+        res.status(500).send(error);
     }
 }

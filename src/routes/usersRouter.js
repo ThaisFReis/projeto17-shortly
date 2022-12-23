@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { token } from '../middlewares/token.js';
-import { getUserByIdControllers, getRanking } from "../controllers/urlsControllers.js";
+import { getUserByIdControllers, getRanking } from "../controllers/userController.js";
 
 const usersRouter = Router();
 
