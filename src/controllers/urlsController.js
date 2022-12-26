@@ -62,7 +62,7 @@ export async function getUrlsByUserIdControllers (userId) {
         return urls.rows;
 
     } catch (error) {
-        res.status(500).send(error);
+        console.log(error);
     }
 }
 
@@ -88,6 +88,7 @@ export async function deleteUrlControllers (req, res) {
     } catch (error) {
         res.status(500).send(error);
     }
+    
 }
 
 export async function getVisitCountControllers (userId) {
@@ -97,7 +98,7 @@ export async function getVisitCountControllers (userId) {
         return visitCount.rows[0];
 
     } catch (error) {
-        res.status(500).send(error);
+        console.log(error);
     }
 }
 
@@ -106,6 +107,6 @@ export async function getRankingByUserIdControllers () {
         await connection.query('SELECT users.name, SUM(urls.visits) AS totalVisits FROM users INNER JOIN urls ON users.id = urls.userId GROUP BY users.name ORDER BY totalVisits DESC LIMIT 10');
 
     } catch (error) {
-        res.status(500).send(error);
+        console.log(error);
     }
 }
